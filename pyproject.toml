@@ -1,0 +1,19 @@
+[project]
+name = "meal-community-backend"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Ryu Juheon",email = "saidbysolo@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "sanic (>=24.12.0,<25.0.0)",
+    "aiohttp (>=3.11.14,<4.0.0)",
+    "sqlalchemy (>=2.0.39,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
