@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-
+from dataclasses import dataclass, field
+from typing import List
 from backend.domain.entity.user import User
 
 
@@ -11,3 +11,7 @@ class Comment:
     """작성자"""
     created_at: str
     """생성일"""
+    replies: List["Comment"] = field(default_factory=list)
+    """대댓글"""
+    likes: int = 0
+    """좋아요 수"""

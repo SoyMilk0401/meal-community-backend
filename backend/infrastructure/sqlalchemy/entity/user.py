@@ -12,9 +12,6 @@ from backend.infrastructure.sqlalchemy.mixin import Schema
 
 
 class UserSchema(Base, Schema):
-    """
-    유저 스키마입니다.
-    """
 
     __tablename__ = "user"
     name: Mapped[str] = mapped_column()
