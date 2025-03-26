@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from backend.domain.entity.comment import Comment
+from backend.domain.entities.comment import Comment
 
 
 @dataclass

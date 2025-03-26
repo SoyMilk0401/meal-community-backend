@@ -5,7 +5,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy.orm import Mapped, mapped_column
 
-from backend.domain.entity.school_info import SchoolInfo
+from backend.domain.entities.school_info import SchoolInfo
 from backend.infrastructure.sqlalchemy.base import Base
 from backend.infrastructure.sqlalchemy.mixin import Schema
 

@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List
-from backend.domain.entity.user import User
+from backend.domain.entities.user import User
 
 
 @dataclass

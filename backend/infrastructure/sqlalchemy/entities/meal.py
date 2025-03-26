@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 from backend.infrastructure.sqlalchemy.base import Base
-from backend.infrastructure.sqlalchemy.entity.comment import CommentSchema
+from backend.infrastructure.sqlalchemy.entities.comment import CommentSchema
 from backend.infrastructure.sqlalchemy.mixin import Schema
 
 

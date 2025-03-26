@@ -6,9 +6,9 @@ def main() -> None:  # pragma: no cover
     from sanic import Sanic
     from sanic.worker.loader import AppLoader
 
-    from backend.application.server import create_app
-    from backend.application.config import BackendConfig
-    from backend.application.argparser import parse_args
+    from backend.infrastructure.server import create_app
+    from backend.infrastructure.config import BackendConfig
+    from backend.infrastructure.argparser import parse_args
 
     backend_config = BackendConfig()
 
