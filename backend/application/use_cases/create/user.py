@@ -1,19 +1,27 @@
-from backend.application.exceptions import UserAlreadyExists, UserNotFound
+from backend.application.dtos.user import CreateUserDTO
+from backend.application.exceptions import (
+    UserAlreadyExists,
+    UserNotFound,
+)
 from backend.domain.entities.user import User
-from backend.domain.repository.user import UserRepository
-from backend.application.use_cases.get.user import GetByEmailWithPasswordUserUseCase
+from backend.domain.repositories.user import UserRepository
+from backend.application.use_cases.get.user import GetUserIDByEmail
 
 
 class CreateUserUseCase:
     def __init__(self, user_repository: UserRepository):
         self.user_repository = user_repository
 
-    async def execute(self, user: User):
+    async def execute(self, create_user_dto: CreateUserDTO) -> User:
         try:
-            await GetByEmailWithPasswordUserUseCase(self.user_repository).execute(
-                user.email, user.password
-            )
+            await GetUserIDByEmail(self.user_repository).execute(create_user_dto.email)
         except UserNotFound:
-            user = await self.user_repository.create(user)
+            user = await self.user_repository.create(
+                create_user_dto.name,
+                create_user_dto.email,
+                create_user_dto.password,
+                create_user_dto.school_info,
+            )
             return user
+
         raise UserAlreadyExists

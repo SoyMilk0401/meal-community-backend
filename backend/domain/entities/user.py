@@ -1,7 +1,8 @@
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import datetime
 
 from backend.domain.entities.school_info import SchoolInfo
+from backend.domain.utils import dict_factory
 
 
 @dataclass
@@ -14,3 +15,8 @@ class User:
     """비밀번호"""
     school_info: SchoolInfo
     """학교 정보"""
+    created_at: datetime
+    """생성일"""
+
+    def to_dict(self):
+        return asdict(self, dict_factory=dict_factory)

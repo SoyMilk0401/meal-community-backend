@@ -1,9 +1,20 @@
-from backend.application.exceptions import UserNotFound
+from backend.application.exceptions import IncorrectEmailOrPassword, UserNotFound
 from backend.domain.entities.user import User
-from backend.domain.repository.user import UserRepository
+from backend.domain.repositories.user import UserRepository
 
 
-class GetByEmailWithPasswordUserUseCase:
+class GetUserIDByEmail:
+    def __init__(self, user_repository: UserRepository):
+        self.user_repository = user_repository
+
+    async def execute(self, email: str) -> int:
+        user_id = await self.user_repository.get_id_by_email(email)
+        if not user_id:
+            raise UserNotFound
+        return user_id
+
+
+class GetUserIDByEmailWithPassword:
     def __init__(self, user_repository: UserRepository):
         self.user_repository = user_repository
 
@@ -11,14 +22,14 @@ class GetByEmailWithPasswordUserUseCase:
         self,
         email: str,
         password: str,
-    ) -> User:
-        user = await self.user_repository.get_by_email_with_password(email, password)
+    ) -> int:
+        user = await self.user_repository.get_id_by_email_with_password(email, password)
         if not user:
-            raise UserNotFound
+            raise IncorrectEmailOrPassword
         return user
 
 
-class GetByIdUserUseCase:
+class GetUserByIDUseCase:
     def __init__(self, user_repository: UserRepository):
         self.user_repository = user_repository
 

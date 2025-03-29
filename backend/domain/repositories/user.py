@@ -1,20 +1,27 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing import Optional
 
+from backend.domain.entities.school_info import SchoolInfo
 from backend.domain.entities.user import User
 
 
 class UserRepository(ABC):
-    async def create(self, user: User) -> User:
+    @abstractmethod
+    async def create(
+        self, name: str, email: str, password: str, school_info: SchoolInfo
+    ) -> User:
         raise NotImplementedError
 
-    async def get_by_email_with_password(
+    @abstractmethod
+    async def get_id_by_email_with_password(
         self, email: str, password: str
-    ) -> Optional[User]:
+    ) -> Optional[int]:
         raise NotImplementedError
 
+    @abstractmethod
     async def get_by_id(self, user_id: int) -> User:
         raise NotImplementedError
 
-    async def delete(self, user: User) -> None:
+    @abstractmethod
+    async def get_id_by_email(self, email: str) -> int | None:
         raise NotImplementedError

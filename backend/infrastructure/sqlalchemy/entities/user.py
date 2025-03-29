@@ -36,6 +36,7 @@ class UserSchema(Base, Schema):
             email=self.email,
             password=self.password,
             school_info=self.school_info.to_entity(),
+            created_at=self.created_at,
         )
 
     @classmethod
@@ -45,4 +46,5 @@ class UserSchema(Base, Schema):
             email=user.email,
             password=user.password,
             school_info=SchoolInfoSchema.from_entity(user.school_info),
+            created_at=user.created_at,
         )

@@ -57,8 +57,36 @@ def parse_args(argv: list[str]) -> Namespace:
     config.add_argument(
         "--db-url",
         type=str,
-        default="",
+        default="sqlite+aiosqlite:///:memory:",
         help="The url of the sql database (default: '')",
+    )
+
+    config.add_argument(
+        "--valkey-url",
+        type=str,
+        default="valkey://127.0.0.1:6379",
+        help="The url of the valkey (default: 'valkey://127.0.0.1:6379')",
+    )
+
+    config.add_argument(
+        "--jwt-secret",
+        type=str,
+        default="Psst, I see dead people",
+        help="The secret to use for JWT (default: 'Psst, I see dead people')",
+    )
+
+    config.add_argument(
+        "--access-token-exp",
+        type=int,
+        default=900,
+        help="The expiration time for the access token (default: 3600)",
+    )
+
+    config.add_argument(
+        "--refresh-token-exp",
+        type=int,
+        default=604800,
+        help="The expiration time for the refresh token (default: 86400)",
     )
 
     config.add_argument(

@@ -31,12 +31,16 @@ class BackendConfig(Config):
         # Default
         self.update(
             {
-                # heliotrope
+                # backend
                 "CONFIG": "",
                 "PRODUCTION": False,
                 "USE_ENV": False,
                 "SENTRY_DSN": "",
-                "DB_URL": "",
+                "DB_URL": "sqlite+aiosqlite:///:memory:",
+                "VALKEY_URL": "valkey://127.0.0.1:6379",
+                "JWT_SECRET": "Psst, I see dead people",
+                "ACCESS_TOKEN_EXP": 900,
+                "REFRESH_TOKEN_EXP": 604800,
                 # Sanic config
                 "HOST": "127.0.0.1",
                 "PORT": 8000,
@@ -53,11 +57,9 @@ class BackendConfig(Config):
                     "apisSorter": "alpha",
                     "operationsSorter": "alpha",
                 },
-                "API_TITLE": "Heliotrope",
+                "API_TITLE": "Backend",
                 "API_VERSION": __version__,
-                "API_DESCRIPTION": "Hitomi.la mirror api",
                 "API_LICENSE_NAME": "MIT",
-                "API_LICENSE_URL": "https://github.com/Saebasol/Heliotrope/blob/main/LICENSE",
             }
         )
 
@@ -66,6 +68,10 @@ class BackendConfig(Config):
     PRODUCTION: bool
     SENTRY_DSN: str
     DB_URL: str
+    VALKEY_URL: str
+    JWT_SECRET: str
+    ACCESS_TOKEN_EXP: int
+    REFRESH_TOKEN_EXP: int
     # Sanic config
     DEBUG: bool
     HOST: str
