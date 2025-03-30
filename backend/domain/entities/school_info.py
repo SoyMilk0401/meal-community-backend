@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
 
 
 @dataclass
@@ -14,7 +13,3 @@ class SchoolInfo:
     """시도교육청코드"""
     standard_school_code: str
     """표준학교코드"""
-    department: Optional[str]
-    """계열명"""
-    major: Optional[str]
-    """학과명"""
