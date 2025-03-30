@@ -90,6 +90,13 @@ def parse_args(argv: list[str]) -> Namespace:
     )
 
     config.add_argument(
+        "--neis-api-key",
+        type=str,
+        default="",
+        help="The API key for the NEIS API (default: '')",
+    )
+
+    config.add_argument(
         "--forwarded-secret",
         type=str,
         default="",

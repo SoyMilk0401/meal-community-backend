@@ -23,7 +23,5 @@ class Meal:
     commnets: list[Comment]
     """댓글"""
 
-
-
     date: datetime
     """급식일자"""
