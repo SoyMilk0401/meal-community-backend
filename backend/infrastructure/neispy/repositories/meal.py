@@ -13,7 +13,7 @@ class NeispyMealRepository(MealRepository):
 
     async def get_meal_by_code(
         self, edu_office_code: str, standard_school_code: str, date: datetime
-    ) -> Meal:
+    ) -> list[Meal]:
 
         info = await self.neispy.mealServiceDietInfo(
             ATPT_OFCDC_SC_CODE=edu_office_code,
@@ -21,6 +21,9 @@ class NeispyMealRepository(MealRepository):
             MLSV_YMD=to_yyyymmdd(date),
         )
 
-        return NeispyMeal.from_neispy(
-            info.mealServiceDietInfo[1].row[0], edu_office_code, standard_school_code
-        )
+        row = info.mealServiceDietInfo[1].row
+
+        return [
+            NeispyMeal.from_neispy(meal, edu_office_code, standard_school_code)
+            for meal in row
+        ]

@@ -1,5 +1,5 @@
 from backend.application.dtos.school import InfoSchoolDTO
 
 
-class WeeklyMealDTO(InfoSchoolDTO):
+class MealDTO(InfoSchoolDTO):
     date: str

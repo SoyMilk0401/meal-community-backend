@@ -6,13 +6,32 @@ from backend.domain.repositories.meal import MealRepository
 from backend.infrastructure.datetime import to_datetime
 
 
+class GetDailyMealUseCase:
+    def __init__(self, meal_repository: MealRepository):
+        self.meal_repository = meal_repository
+    
+    async def execute(
+        self, edu_office_code: str, standard_school_code: str, current_date: str
+    ) -> list[Meal]:
+        current_datetime = to_datetime(current_date)
+
+        meals = await self.meal_repository.get_meal_by_code(
+            edu_office_code, standard_school_code, current_datetime
+        )
+
+        if not meals:
+            raise MealNotFound
+
+        return meals
+
+
 class GetWeeklyMealUseCase:
     def __init__(self, meal_repository: MealRepository):
         self.meal_repository = meal_repository
 
     async def execute(
         self, edu_office_code: str, standard_school_code: str, current_date: str
-    ) -> list[Meal]:
+    ) -> list[list[Meal]]:
         current_datetime = to_datetime(current_date)
         dates = [
             current_datetime + timedelta(days=i)
@@ -28,7 +47,7 @@ class GetWeeklyMealUseCase:
             ]
         )
 
-        if not all(meal for meal in nullable_meals):
+        if not any(meal for meal in nullable_meals):
             raise MealNotFound
 
         return nullable_meals
