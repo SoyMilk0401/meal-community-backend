@@ -7,7 +7,7 @@ from backend.domain.repositories.refresh_token import RefreshTokenRepository
 class ValkeyRefreshTokenRepository(RefreshTokenRepository):
     def __init__(self, valkey: Valkey, expires_in: int, prefix: str = "refresh_token"):
         self.valkey = valkey
-        self.prefix = prefix
+        self.prefix = prefixs
         super().__init__(expires_in)
 
     async def create_refresh_token(self, refresh_token: RefreshToken) -> RefreshToken:

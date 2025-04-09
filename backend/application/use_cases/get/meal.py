@@ -1,0 +1,34 @@
+import asyncio
+from datetime import timedelta
+from backend.application.exceptions import MealNotFound
+from backend.domain.entities.meal import Meal
+from backend.domain.repositories.meal import MealRepository
+from backend.infrastructure.datetime import to_datetime
+
+
+class GetWeeklyMealUseCase:
+    def __init__(self, meal_repository: MealRepository):
+        self.meal_repository = meal_repository
+
+    async def execute(
+        self, edu_office_code: str, standard_school_code: str, current_date: str
+    ) -> list[Meal]:
+        current_datetime = to_datetime(current_date)
+        dates = [
+            current_datetime + timedelta(days=i)
+            for i in range(-current_datetime.weekday(), 5 - current_datetime.weekday())
+        ]
+
+        nullable_meals = await asyncio.gather(
+            *[
+                self.meal_repository.get_meal_by_code(
+                    edu_office_code, standard_school_code, date
+                )
+                for date in dates
+            ]
+        )
+
+        if not all(meal for meal in nullable_meals):
+            raise MealNotFound
+
+        return nullable_meals

@@ -9,6 +9,7 @@ from backend.infrastructure.config import BackendConfig
 from backend.adapters.controllers.endpoint import endpoint
 from backend.infrastructure.error import ErrorHandler
 from backend.infrastructure.jwt import jwt_decode, jwt_encode
+from backend.infrastructure.neispy.repositories.meal import NeispyMealRepository
 from backend.infrastructure.neispy.repositories.school import NeispySchoolRepository
 from backend.infrastructure.sanic import Backend
 
@@ -31,6 +32,7 @@ async def startup(app: Backend, loop: AbstractEventLoop) -> None:
         app.ctx.valkey, app.config.REFRESH_TOKEN_EXP
     )
     app.ctx.school_repository = NeispySchoolRepository(app.ctx.neispy)
+    app.ctx.meal_repository = NeispyMealRepository(app.ctx.neispy)
 
     # Initialize External Services
     app.ctx.jwt_encode = partial(

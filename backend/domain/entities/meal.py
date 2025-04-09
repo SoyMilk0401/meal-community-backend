@@ -1,7 +1,7 @@
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import datetime
 
-from backend.domain.entities.comment import Comment
+from backend.domain.utils import dict_factory
 
 
 @dataclass
@@ -20,8 +20,8 @@ class Meal:
     calorie: str
     """칼로리"""
 
-    commnets: list[Comment]
-    """댓글"""
-
     date: datetime
     """급식일자"""
+
+    def to_dict(self):
+        return asdict(self, dict_factory=dict_factory)

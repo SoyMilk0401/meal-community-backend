@@ -32,3 +32,8 @@ class NeedAuth(BackendException):
 class SchoolNotFound(BackendException):
     def __init__(self, message: str = "학교를 찾을 수 없습니다."):
         super().__init__(message)
+
+
+class MealNotFound(BackendException):
+    def __init__(self, message: str = "급식을 찾을 수 없습니다."):
+        super().__init__(message)
