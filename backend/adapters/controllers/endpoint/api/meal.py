@@ -10,7 +10,7 @@ from backend.infrastructure.sanic import BackendRequest
 meal = Blueprint("meal_endpoint", url_prefix="/meal")
 
 
-@meal.get("/weekly")
+@meal.post("/weekly")
 @validate(json=WeeklyMealDTO, body_argument="weekly_meal_dto")
 async def get_weekly_meal(request: BackendRequest, weekly_meal_dto: WeeklyMealDTO):
     """
