@@ -3,7 +3,10 @@ from sanic.blueprints import Blueprint
 from sanic_ext import validate
 
 from backend.application.dtos.meal import MealDTO
-from backend.application.use_cases.get.meal import GetDailyMealUseCase, GetWeeklyMealUseCase
+from backend.application.use_cases.get.meal import (
+    GetDailyMealUseCase,
+    GetWeeklyMealUseCase,
+)
 from backend.infrastructure.sanic import BackendRequest
 
 

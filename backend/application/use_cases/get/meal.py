@@ -9,7 +9,7 @@ from backend.infrastructure.datetime import to_datetime
 class GetDailyMealUseCase:
     def __init__(self, meal_repository: MealRepository):
         self.meal_repository = meal_repository
-    
+
     async def execute(
         self, edu_office_code: str, standard_school_code: str, current_date: str
     ) -> list[Meal]:
