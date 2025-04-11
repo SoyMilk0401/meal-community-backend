@@ -26,7 +26,30 @@ async def register_user(
     user = await CreateUserUseCase(request.app.ctx.user_repository).execute(
         create_user_dto
     )
-    return json(user.to_dict())
+    user_id = await GetUserIDByEmailWithPassword(
+        request.app.ctx.user_repository
+    ).execute(user.email, user.password)
+
+    refresh_token = await CreateRefreshTokenUseCase(
+        request.app.ctx.refresh_token_repository
+    ).execute(user_id)
+
+    response = json(
+        {
+            "access_token": request.app.ctx.jwt_encode({"user_id": user_id}),
+        }
+    )
+
+    response.add_cookie(
+        "refresh_token",
+        refresh_token.value,
+        max_age=60 * 60 * 24 * 7,  # 7 days
+        samesite="strict",
+        secure=False,
+        httponly=True,
+    )
+
+    return response
 
 
 @user.post("/login")
