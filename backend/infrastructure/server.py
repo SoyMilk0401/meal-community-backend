@@ -4,20 +4,18 @@ from functools import partial
 from neispy import Neispy
 from valkey.asyncio import Valkey
 
-
-from backend.infrastructure.config import BackendConfig
 from backend.adapters.controllers.endpoint import endpoint
+from backend.infrastructure.config import BackendConfig
 from backend.infrastructure.error import ErrorHandler
 from backend.infrastructure.jwt import jwt_decode, jwt_encode
 from backend.infrastructure.neispy.repositories.meal import NeispyMealRepository
 from backend.infrastructure.neispy.repositories.school import NeispySchoolRepository
 from backend.infrastructure.sanic import Backend
-
 from backend.infrastructure.sqlalchemy import SQLAlchemy
+from backend.infrastructure.sqlalchemy.repositories.user import SQLAlchemyUserRepository
 from backend.infrastructure.valkey.entities.repositories.refresh_token import (
     ValkeyRefreshTokenRepository,
 )
-from backend.infrastructure.sqlalchemy.repositories.user import SQLAlchemyUserRepository
 
 
 async def startup(app: Backend, loop: AbstractEventLoop) -> None:
@@ -49,7 +47,7 @@ def create_app(config: BackendConfig) -> Backend:
     backend = Backend("backend", error_handler=ErrorHandler())
     config.CORS_ORIGINS = "http://localhost"
     config.CORS_SUPPORTS_CREDENTIALS = True
-    config.CORS_ALLOW_HEADERS = ["Content-Type", "Authorization"]
+    config.CORS_ALLOW_HEADERS = ["Content-Type", "Authorization", "Set-Cookie"]
     backend.config.update(config)
     backend.blueprint(endpoint)
     backend.before_server_start(startup)
