@@ -24,7 +24,7 @@ async def write_comment(
     user_id: int,
 ):
     user = await GetUserByIDUseCase(request.app.ctx.user_repository).execute(
-        int(user_id)
+       user_id
     )
 
     comment_entity = Comment(
