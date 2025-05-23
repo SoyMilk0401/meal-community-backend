@@ -51,7 +51,7 @@ async def write_reply(
         return json({"error": "Parent ID is required"})
 
     user = await GetUserByIDUseCase(request.app.ctx.user_repository).execute(
-        int(user_id)
+        user_id
     )
 
     comment_entity = Comment(
