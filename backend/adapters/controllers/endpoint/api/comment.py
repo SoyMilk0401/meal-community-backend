@@ -48,7 +48,7 @@ async def get_comments_by_meal_id(
     comments = await GetCommentByMealIdUseCase(
         request.app.ctx.comment_repository
     ).execute(meal_id)
-    
+
     result = [GetCommentDTO.from_entity(comment) for comment in comments]
-    
+
     return json(result)

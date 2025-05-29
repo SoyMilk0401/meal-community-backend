@@ -5,9 +5,9 @@ from neispy import Neispy
 from neispy.error import DataNotFound
 
 from backend.domain.entities.meal import Meal
+from backend.domain.enum import CreateMealStatus
 from backend.domain.repositories.meal import MealRepository
 from backend.infrastructure.datetime import to_yyyymmdd
-from backend.domain.enum import CreateMealStatus
 from backend.infrastructure.neispy.entities.meal import NeispyMeal
 
 

@@ -1,8 +1,9 @@
 from dataclasses import asdict, dataclass
 from datetime import datetime
+
+from backend.application.dtos.user import PrivateUserDTO
 from backend.domain.entities.comment import Comment
 from backend.domain.utils import dict_factory
-from backend.application.dtos.user import PrivateUserDTO
 
 
 @dataclass
@@ -13,7 +14,8 @@ class CreateCommentDTO:
     """댓글 내용"""
     parent_id: int | None = None
     """부모 댓글 ID"""
-    
+
+
 @dataclass
 class GetCommentDTO:
     id: int
@@ -31,14 +33,14 @@ class GetCommentDTO:
 
     def to_dict(self):
         return asdict(self, dict_factory=dict_factory)
-    
+
     @classmethod
     def from_entity(cls, entity: Comment):
         return cls(
-            id = entity.id,
-            content = entity.content,
-            author = PrivateUserDTO.from_entity(entity.user),
-            replies = [cls.from_entity(reply) for reply in entity.replies],
-            created_at = entity.created_at,
-            parent_id = entity.parent_id
+            id=entity.id,
+            content=entity.content,
+            author=PrivateUserDTO.from_entity(entity.user),
+            replies=[cls.from_entity(reply) for reply in entity.replies],
+            created_at=entity.created_at,
+            parent_id=entity.parent_id,
         )
