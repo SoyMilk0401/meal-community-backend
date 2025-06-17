@@ -18,8 +18,8 @@ comment = Blueprint("comment_endpoint", url_prefix="/comment")
 @require_auth
 async def write_comment(
     request: BackendRequest,
-    create_comment_dto: CreateCommentDTO,
     user_id: int,
+    create_comment_dto: CreateCommentDTO,
 ):
     user = await GetUserByIDUseCase(request.app.ctx.user_repository).execute(user_id)
 
