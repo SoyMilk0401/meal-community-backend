@@ -27,30 +27,31 @@ async def get_daily_meal(request: BackendRequest, user_id: str, meal_dto: MealDT
     edu_office_code = user.school_info.edu_office_code
     standard_school_code = user.school_info.standard_school_code
 
-    try:
-        results = await GetDailyMealWithIDUseCase(
-            request.app.ctx.sa_meal_repository
-        ).execute(
-            edu_office_code,
-            standard_school_code,
-            meal_dto.date,
-        )
-    except MealNotFound:
-        remote_results = await GetDailyMealUseCase(
-            request.app.ctx.neispy_meal_repository
-        ).execute(edu_office_code, standard_school_code, meal_dto.date)
-
-        results = [
-            (
-                await CreateMealUseCase(request.app.ctx.sa_meal_repository).execute(
-                    edu_office_code,
-                    standard_school_code,
-                    result,
-                ),
-                result,
+    async with request.app.ctx.lock:
+        try:
+            results = await GetDailyMealWithIDUseCase(
+                request.app.ctx.sa_meal_repository
+            ).execute(
+                edu_office_code,
+                standard_school_code,
+                meal_dto.date,
             )
-            for result in remote_results
-        ]
+        except MealNotFound:
+            remote_results = await GetDailyMealUseCase(
+                request.app.ctx.neispy_meal_repository
+            ).execute(edu_office_code, standard_school_code, meal_dto.date)
+
+            results = [
+                (
+                    await CreateMealUseCase(request.app.ctx.sa_meal_repository).execute(
+                        edu_office_code,
+                        standard_school_code,
+                        result,
+                    ),
+                    result,
+                )
+                for result in remote_results
+            ]
 
     return json(
         {

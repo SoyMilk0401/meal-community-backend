@@ -1,6 +1,8 @@
+import asyncio
 from asyncio import AbstractEventLoop
 from functools import partial
 
+from google.genai import Client
 from neispy import Neispy
 from valkey.asyncio import Valkey
 
@@ -21,7 +23,6 @@ from backend.infrastructure.sqlalchemy.repositories.user import SQLAlchemyUserRe
 from backend.infrastructure.valkey.entities.repositories.refresh_token import (
     ValkeyRefreshTokenRepository,
 )
-from google.genai import Client
 
 
 async def startup(app: Backend, loop: AbstractEventLoop) -> None:
@@ -47,10 +48,12 @@ async def startup(app: Backend, loop: AbstractEventLoop) -> None:
         jwt_encode, secret=app.config.JWT_SECRET, exp=app.config.ACCESS_TOKEN_EXP
     )
     app.ctx.jwt_decode = partial(jwt_decode, secret=app.config.JWT_SECRET)
+    app.ctx.lock = asyncio.Lock()
 
 
 async def closeup(app: Backend, loop: AbstractEventLoop) -> None:
     await app.ctx.sa.engine.dispose()
+
 
 def create_app(config: BackendConfig) -> Backend:
     backend = Backend("backend", error_handler=ErrorHandler())
