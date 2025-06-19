@@ -5,8 +5,12 @@ services:
       dockerfile: Dockerfile
     container_name: backend
     environment:
-      SANIC_DB_URL: postgres://postgres_user:backendpasswd@postgres:5432/backend_db
-      SANIC_VALKEY_URL: valkey://valkey:6379/
+      SANIC_USE_ENV: "true"
+      SANIC_PRODUCTION: "true"
+      SANIC_GEMINI_API_KEY: ""
+      SANUC_NEIS_API_KEY: ""
+      SANIC_DB_URL: "postgres://postgres_user:backendpasswd@postgres:5431/backend_db"
+      SANIC_VALKEY_URL: "valkey://valkey:6379/"
     ports:
       - "9000:9000"
     depends_on:
