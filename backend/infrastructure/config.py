@@ -22,12 +22,6 @@ class BackendConfig(Config):
         *,
         converters: Optional[Sequence[Callable[[str], Any]]] = [list_converter],
     ):
-        super().__init__(
-            defaults=defaults,
-            env_prefix=env_prefix,
-            keep_alive=keep_alive,
-            converters=converters,
-        )
         # Default
         self.update(
             {
@@ -50,7 +44,6 @@ class BackendConfig(Config):
                 "DEBUG": False,
                 "ACCESS_LOG": False,
                 "FORWARDED_SECRET": "",
-                "FALLBACK_ERROR_FORMAT": "json",
                 # Sanic ext config
                 "OAS_UI_DEFAULT": "swagger",
                 "OAS_URI_REDOC": False,
@@ -63,6 +56,12 @@ class BackendConfig(Config):
                 "API_VERSION": __version__,
                 "API_LICENSE_NAME": "MIT",
             }
+        )
+        super().__init__(
+            defaults={**{"_FALLBACK_ERROR_FORMAT": "json"}, **defaults},
+            env_prefix=env_prefix,
+            keep_alive=keep_alive,
+            converters=converters,
         )
 
     USE_ENV: bool
