@@ -7,12 +7,13 @@ services:
     environment:
       SANIC_USE_ENV: "true"
       SANIC_PRODUCTION: "true"
+      SANIC_HOST: "0.0.0.0"
       SANIC_GEMINI_API_KEY: ""
       SANUC_NEIS_API_KEY: ""
-      SANIC_DB_URL: "postgres://postgres_user:backendpasswd@postgres:5431/backend_db"
-      SANIC_VALKEY_URL: "valkey://valkey:6379/"
+      SANIC_DB_URL: "postgresql+asyncpg://postgres_user:backendpasswd@postgres-backend:5432/backend_db"
+      SANIC_VALKEY_URL: "valkey://valkey-backend:6379/"
     ports:
-      - "9000:9000"
+      - "8000:8000"
     depends_on:
       - postgres
       - valkey
@@ -27,15 +28,15 @@ services:
       POSTGRES_DB: backend_db
     volumes:
       - pgdata:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+    expose:
+      - 5432
 
 
   valkey:
     image: valkey/valkey:latest
     container_name: valkey-backend
-    ports:
-      - "6379:6379"
+    expose:
+      - 6379
     depends_on:
       - postgres
 
