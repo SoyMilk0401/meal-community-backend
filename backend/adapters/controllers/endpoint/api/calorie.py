@@ -3,6 +3,7 @@ from io import BytesIO
 from sanic import json
 from sanic.blueprints import Blueprint
 from sanic_ext import openapi
+from sanic_ext.extensions.openapi.types import Binary, Integer
 
 from backend.application.use_cases.get.calorie import GetCalorieUseCase
 from backend.application.use_cases.get.meal import GetDailyMealByIDUseCase
@@ -13,21 +14,7 @@ calorie = Blueprint("calorie_endpoint", url_prefix="/calorie")
 
 
 @openapi.body(
-    {
-        "type": "object",
-        "properties": {
-            "meal_id": {
-                "type": "integer",
-                "description": "ID of the meal to analyze",
-            },
-            "image": {
-                "type": "string",
-                "format": "binary",
-                "description": "Image of the meal for calorie estimation",
-            },
-        },
-        "required": ["meal_id", "image"],
-    }
+    {"multipart/form-data": {"file": Binary(), "meal_id": Integer()}}, required=True
 )
 @calorie.post("/inference")
 @require_auth
@@ -35,11 +22,25 @@ async def get_calories_by_meal_image(
     request: BackendRequest,
     _,
 ):
+    if not request.form:
+        return json({"error": "Form data is required"}, status=400)
+
+    meal_id = request.form.get("meal_id")
+
+    if not meal_id:
+        return json({"error": "Meal ID is required"}, status=400)
+
     meal = await GetDailyMealByIDUseCase(request.app.ctx.sa_meal_repository).execute(
-        request.form.get("meal_id")
+        meal_id
     )
 
+    if not request.files:
+        return json({"error": "Image file is required"}, status=400)
+
     image = request.files.get("image")
+
+    if not image:
+        return json({"error": "Image file is required"}, status=400)
 
     calorie = await GetCalorieUseCase(request.app.ctx.calorie_repository).execute(
         meal, BytesIO(image.body)
