@@ -33,3 +33,12 @@ class TimetableSchema(Base, Schema):
     school_info: Mapped[SchoolInfoSchema] = relationship(
         back_populates="timetables"
     )
+    
+    def to_entity(self) -> Timetable:
+        return Timetable(
+            date=self.date,
+            grade=self.grade,
+            room=self.room,
+            period=self.period,
+            subject=self.subject,
+        )
