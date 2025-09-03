@@ -5,8 +5,6 @@ from backend.domain.entities.school_info import SchoolInfo
 
 @dataclass
 class Timetable:
-    school_info: SchoolInfo
-    """학교 정보"""
     date: date
     """시간표일자"""
     

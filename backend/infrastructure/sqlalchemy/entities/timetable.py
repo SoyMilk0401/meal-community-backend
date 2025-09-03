@@ -30,10 +30,6 @@ class TimetableSchema(Base, Schema):
     subject: Mapped[str] = mapped_column()
     """과목명"""
     
-    school_info: Mapped[SchoolInfoSchema] = relationship(
-        back_populates="timetables"
-    )
-    
     def to_entity(self) -> Timetable:
         return Timetable(
             date=self.date,
