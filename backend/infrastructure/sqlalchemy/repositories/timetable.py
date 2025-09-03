@@ -49,7 +49,7 @@ class SQLAlchemyTimetableRepository(TimetableRepository):
     ) -> Timetable:
         async with self.sa.session_maker() as session:
             async with session.begin():
-                schema = TimetableSchema(
+                timetable_schema = TimetableSchema(
                     school_info=SchoolInfo(
                         name=school_name,
                         edu_office_code=edu_office_code,
@@ -59,6 +59,6 @@ class SQLAlchemyTimetableRepository(TimetableRepository):
                     grade=grade,
                     room=room,
                 )
-                session.add(schema)
+                session.add(timetable_schema)
                 await session.commit()
-                return schema.to_entity()
+                return timetable_schema.id

@@ -33,12 +33,17 @@ class NeispyTimetableRepository(TimetableRepository):
             else:
                 func = await self.neispy.spsTimetable
                 
+            ay = date.year if date.month >= 3 else date.year - 1
+            sem = 1 if 2 < date.month < 9 else 2
+
             timetable = func(
                 ATPT_OFCDC_SC_CODE=edu_office_code,
                 SD_SCHUL_CODE=standard_school_code,
                 ALL_TI_YMD=to_yyyymmdd(date),
                 GRADE=grade,
                 CLASS_NM=room,
+                AY=str(ay),
+                SEM=str(sem)
             )
 
         except DataNotFound:
