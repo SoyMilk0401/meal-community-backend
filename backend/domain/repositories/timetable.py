@@ -16,5 +16,5 @@ class TimetableRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    async def create(self, timetable: Timetable) -> Timetable:
+    async def create_by_code(self, timetable: Timetable) -> Timetable:
         raise NotImplementedError
