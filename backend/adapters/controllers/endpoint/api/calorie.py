@@ -3,7 +3,7 @@ from io import BytesIO
 from sanic import json
 from sanic.blueprints import Blueprint
 from sanic_ext import openapi
-from sanic_ext.extensions.openapi.types import Binary, Integer
+from sanic_ext.extensions.openapi.types import Binary, String
 
 from backend.application.use_cases.get.calorie import GetCalorieUseCase
 from backend.application.use_cases.get.meal import GetDailyMealByIDUseCase
@@ -14,7 +14,7 @@ calorie = Blueprint("calorie_endpoint", url_prefix="/calorie")
 
 
 @openapi.body(
-    {"multipart/form-data": {"file": Binary(), "meal_id": Integer()}}, required=True
+    {"multipart/form-data": {"file": Binary(), "meal_id": String()}}, required=True
 )
 @calorie.post("/inference")
 @require_auth
@@ -25,13 +25,13 @@ async def get_calories_by_meal_image(
     if not request.form:
         return json({"error": "Form data is required"}, status=400)
 
-    meal_id = request.form.get("meal_id")
+    meal_id: str | None = request.form.get("meal_id")
 
     if not meal_id:
         return json({"error": "Meal ID is required"}, status=400)
 
     meal = await GetDailyMealByIDUseCase(request.app.ctx.sa_meal_repository).execute(
-        meal_id
+        int(meal_id)
     )
 
     if not request.files:
