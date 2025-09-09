@@ -15,5 +15,5 @@ class Timetable:
     
     period: str
     """교시"""
-    subject_name: str
+    subject: str
     """과목명"""

@@ -12,12 +12,16 @@ from backend.infrastructure.config import BackendConfig
 from backend.infrastructure.genai.repositories.calorie import GeminiCalorieRepository
 from backend.infrastructure.neispy.repositories.meal import NeispyMealRepository
 from backend.infrastructure.neispy.repositories.school import NeispySchoolRepository
+from backend.infrastructure.neispy.repositories.timetable import NeispyTimetableRepository
 from backend.infrastructure.sqlalchemy import SQLAlchemy
 from backend.infrastructure.sqlalchemy.repositories.comment import (
     SQLAlchemyCommentRepository,
 )
 from backend.infrastructure.sqlalchemy.repositories.meal import SQLAlchemyMealRepository
 from backend.infrastructure.sqlalchemy.repositories.user import SQLAlchemyUserRepository
+from backend.infrastructure.sqlalchemy.repositories.timetable import (
+    SQLAlchemyTimetableRepository,
+)
 from backend.infrastructure.valkey.entities.repositories.refresh_token import (
     ValkeyRefreshTokenRepository,
 )
@@ -30,9 +34,11 @@ class BackendContext(SimpleNamespace):
     gemini: AsyncClient
     user_repository: SQLAlchemyUserRepository
     comment_repository: SQLAlchemyCommentRepository
+    timmetable_repository: SQLAlchemyTimetableRepository
     refresh_token_repository: ValkeyRefreshTokenRepository
     neispy_school_repository: NeispySchoolRepository
     neispy_meal_repository: NeispyMealRepository
+    neispy_timetable_repository: NeispyTimetableRepository
     sa_meal_repository: SQLAlchemyMealRepository
     calorie_repository: GeminiCalorieRepository
     jwt_encode: Callable[[dict[str, Any]], str]

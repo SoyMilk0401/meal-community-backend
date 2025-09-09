@@ -42,6 +42,8 @@ async def startup(app: Backend, loop: AbstractEventLoop) -> None:
     app.ctx.neispy_meal_repository = NeispyMealRepository(app.ctx.neispy)
     app.ctx.sa_meal_repository = SQLAlchemyMealRepository(app.ctx.sa)
     app.ctx.calorie_repository = GeminiCalorieRepository(app.ctx.gemini)
+    app.ctx.timmetable_repository = SQLAlchemyMealRepository(app.ctx.sa)
+    app.ctx.neispy_timetable_repository = NeispyMealRepository(app.ctx.neispy)
 
     # Initialize External Services
     app.ctx.jwt_encode = partial(
