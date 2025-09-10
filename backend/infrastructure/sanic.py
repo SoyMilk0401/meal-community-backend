@@ -35,7 +35,7 @@ class BackendContext(SimpleNamespace):
     gemini: AsyncClient
     user_repository: SQLAlchemyUserRepository
     comment_repository: SQLAlchemyCommentRepository
-    timmetable_repository: SQLAlchemyTimetableRepository
+    timetable_repository: SQLAlchemyTimetableRepository
     refresh_token_repository: ValkeyRefreshTokenRepository
     neispy_school_repository: NeispySchoolRepository
     neispy_meal_repository: NeispyMealRepository
