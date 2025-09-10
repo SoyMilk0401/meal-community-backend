@@ -52,4 +52,8 @@ class CalorieNotFound(BackendException):
 class TimetableNotFound(BackendException):
     def __init__(self, message: str = "시간표를 찾을 수 없습니다."):
         super().__init__(message)
+        
+class SchoolInfoNotFound(BackendException):
+    def __init__(self, message: str = "학교정보를 찾을 수 없습니다."):
+        super().__init__(message)
 

@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from datetime import date
 
-from backend.domain.entities.school_info import SchoolInfo
 
 @dataclass
 class Timetable:

@@ -10,15 +10,11 @@ class CreateTimetableUseCase:
 
     async def execute(
         self,
-        school_name: str,
-        edu_office_code: str,
-        standard_school_code: str,
+        school_info_id: int,
         timetable: Timetable,
     ) -> int:
-        result = await self.timetable_repository.create_by_code(
-            school_name=school_name,
-            edu_office_code=edu_office_code,
-            standard_school_code=standard_school_code,
+        result = await self.timetable_repository.create(
+            school_info_id=school_info_id,
             timetable=timetable,
         )
 

@@ -41,36 +41,17 @@ class SQLAlchemyTimetableRepository(TimetableRepository):
 
     async def create(
         self,
-        school_name: str,
-        edu_office_code: str,
-        standard_school_code: str,
-        date: date,
-        grade: int,
-        room: int,
+        school_info_id: int,
+        timetable: Timetable,
     ) -> Timetable:
         async with self.sa.session_maker() as session:
             async with session.begin():
-                school_info_subquery = (
-                    select(SchoolInfoSchema.id)
-                    .where(
-                        SchoolInfoSchema.edu_office_code == edu_office_code,
-                        SchoolInfoSchema.standard_school_code == standard_school_code,
-                        SchoolInfoSchema.name == school_name,
-                    )
-                    .scalar_subquery()
-                )
-                
-                
-                
                 timetable_schema = TimetableSchema(
-                    school_info=SchoolInfo(
-                        name=school_name,
-                        edu_office_code=edu_office_code,
-                        standard_school_code=standard_school_code,
-                    ),
-                    date=date,
-                    grade=grade,
-                    room=room,
+                    school_info_id=school_info_id,
+                    date=timetable.date,
+                    grade=timetable.grade,
+                    room=timetable.room,
+                    data=timetable.data,
                 )
                 session.add(timetable_schema)
                 await session.commit()

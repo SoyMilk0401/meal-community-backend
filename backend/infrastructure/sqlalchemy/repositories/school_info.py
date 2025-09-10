@@ -61,6 +61,6 @@ class SQLAlchemySchoolInfoRepository:
 
             schema = result.scalars().first()
             if schema:
-                return schema.id
+                return schema
 
             return None

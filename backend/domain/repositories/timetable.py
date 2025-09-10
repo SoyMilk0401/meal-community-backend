@@ -6,9 +6,7 @@ from backend.domain.entities.timetable import Timetable
 class TimetableRepository(ABC):
     @abstractmethod
     async def get_by_code(
-        school_name: str,
-        edu_office_code: str,
-        standard_school_code: str,
+        school_info_id:int,
         date: date,
         grade: int,
         room: int
@@ -16,5 +14,5 @@ class TimetableRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    async def create_by_code(self, timetable: Timetable) -> Timetable:
+    async def create(self, timetable: Timetable) -> Timetable:
         raise NotImplementedError
