@@ -45,3 +45,22 @@ class SQLAlchemySchoolInfoRepository:
             )
 
             return result.scalars().first()
+
+    async def get_id_by_code(
+        self, edu_office_code: str, standard_school_code: str
+    ) -> int | None:
+        async with self.sa.session_maker() as session:
+            result = await session.execute(
+                select(SchoolInfoSchema.id).where(
+                    and_(
+                        SchoolInfoSchema.edu_office_code == edu_office_code,
+                        SchoolInfoSchema.standard_school_code == standard_school_code,
+                    )
+                )
+            )
+
+            schema = result.scalars().first()
+            if schema:
+                return schema.id
+
+            return None
