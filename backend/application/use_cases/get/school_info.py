@@ -10,7 +10,8 @@ class GetSchoolInfoUseCase:
         self, edu_office_code: str, standard_school_code: str
     ) -> int:
         school_info_id = await self._school_info_repository.get_id_by_code(
-            edu_office_code, standard_school_code
+            edu_office_code=edu_office_code,
+            standard_school_code=standard_school_code,
         )
         
         if not school_info_id:

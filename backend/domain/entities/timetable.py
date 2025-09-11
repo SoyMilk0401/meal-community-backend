@@ -1,6 +1,7 @@
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass, field
 from datetime import date
 
+from backend.domain.utils import dict_factory
 
 @dataclass
 class Timetable:
@@ -16,3 +17,6 @@ class Timetable:
     """교시"""
     subject: str
     """과목명"""
+    
+    def to_dict(self):
+        return asdict(self, dict_factory=dict_factory)

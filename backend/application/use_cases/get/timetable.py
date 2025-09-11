@@ -1,64 +1,46 @@
-from datetime import timedelta
+from datetime import date, timedelta
 from backend.application.exceptions import TimetableNotFound
+from backend.application.use_cases.create.timetable import CreateTimetableUseCase
+from backend.application.use_cases.get.school_info import GetSchoolInfoUseCase
 from backend.domain.entities.timetable import Timetable
-from backend.domain.repositories.timetable import TimetableRepository 
-from backend.infrastructure.datetime import to_date
-
-
-class GetWeeklyTimetableUseCase:
-    def __init__(self, timetable_repository: TimetableRepository):
-        self.timetable_repository = timetable_repository
-
-    async def execute(
-        self, 
-        school_info_id: int,
-        current_date: str,
-        grade: int,
-        room: int
-    ) -> list[list[Timetable]]:
-        
-        current_datetime = to_date(current_date)
-        dates = [
-            current_datetime.date + timedelta(days=i)
-            for i in range(-current_datetime.date.weekday(), 5 - current_datetime.date.weekday())
-        ]
-        
-        timetables = []
-        for date in dates:
-            daily_timetables = await self.timetable_repository.get_by_code(
-                school_info_id=school_info_id,
-                date=date,
-                grade=grade,
-                room=room,
-            )
-            if not daily_timetables:
-                raise TimetableNotFound
-            timetables.append(daily_timetables)
-        
-        return timetables
+from backend.domain.entities.user import User
+from backend.domain.repositories.timetable import TimetableRepository
 
 
 class GetDailyTimetableUseCase:
-    def __init__(self, timetable_repository: TimetableRepository):
-        self.timetable_repository = timetable_repository
+    def __init__(self, sa_timetable_repository: TimetableRepository, remote_timetable_repository: TimetableRepository):
+        self.sa_timetable_repository = sa_timetable_repository
+        self.remote_timetable_repository = remote_timetable_repository
 
     async def execute(
         self, 
+        user: User,
         school_info_id: int,
-        current_date: str,
-        grade: int,
-        room: int
+        date: date
     ) -> list[Timetable]:
         
-        current_datetime = to_date(current_date)
-        
-        timetables = await self.timetable_repository.get_by_code(
+        timetables = await self.sa_timetable_repository.get_by_code(
             school_info_id=school_info_id,
-            date=current_datetime,
-            grade=grade,
-            room=room,
+            date=date,
+            grade=user.grade,
+            room=user.room,
         )
         
+        if not timetables:
+            timetables = await self.remote_timetable_repository.get_by_code(
+                school_name=user.school_info.name,
+                edu_office_code=user.school_info.edu_office_code,
+                standard_school_code=user.school_info.standard_school_code,
+                date=date,
+                grade=str(user.grade),
+                room=str(user.room),
+            )
+            
+            if timetables:
+                create_use_case = CreateTimetableUseCase(self.sa_timetable_repository)
+                for timetable in timetables:
+                    await create_use_case.execute(school_info_id, timetable)
+
         if not timetables:
             raise TimetableNotFound
         

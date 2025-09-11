@@ -16,9 +16,7 @@ class SQLAlchemyTimetableRepository(TimetableRepository):
     
     async def get_by_code(
         self,
-        school_name: str,
-        edu_office_code: str,
-        standard_school_code: str,
+        school_info_id: int,
         date: date,
         grade: int,
         room: int,
@@ -27,11 +25,7 @@ class SQLAlchemyTimetableRepository(TimetableRepository):
             async with session.begin():
                 result = await session.execute(
                     select(TimetableSchema).where(
-                        TimetableSchema.school_info.has(
-                            SchoolInfo.name == school_name,
-                            SchoolInfo.edu_office_code == edu_office_code,
-                            SchoolInfo.standard_school_code == standard_school_code,
-                        ),
+                        TimetableSchema.school_info_id == school_info_id,
                         TimetableSchema.date == date,
                         TimetableSchema.grade == grade,
                         TimetableSchema.room == room,
@@ -51,7 +45,8 @@ class SQLAlchemyTimetableRepository(TimetableRepository):
                     date=timetable.date,
                     grade=timetable.grade,
                     room=timetable.room,
-                    data=timetable.data,
+                    period=timetable.period,
+                    subject=timetable.subject,
                 )
                 session.add(timetable_schema)
                 await session.commit()

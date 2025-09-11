@@ -1,6 +1,4 @@
-from backend.application.exceptions import SchoolNotFound
 from backend.domain.entities.timetable import Timetable
-from backend.domain.enum import CreateTimetableStatus
 from backend.domain.repositories.timetable import TimetableRepository
 
 
@@ -17,8 +15,5 @@ class CreateTimetableUseCase:
             school_info_id=school_info_id,
             timetable=timetable,
         )
-
-        if result == CreateTimetableStatus.SCHOOL_INFO_NOT_FOUND:
-            raise SchoolNotFound
 
         return result

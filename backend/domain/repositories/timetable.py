@@ -14,5 +14,5 @@ class TimetableRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    async def create(self, timetable: Timetable) -> Timetable:
+    async def create(self, school_info_id: int, timetable: Timetable) -> Timetable:
         raise NotImplementedError

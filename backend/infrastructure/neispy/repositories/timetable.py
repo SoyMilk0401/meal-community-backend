@@ -5,11 +5,10 @@ from neispy import Neispy
 from neispy.error import DataNotFound
 
 from backend.domain.entities.timetable import Timetable
-from backend.domain.repositories.timetable import TimetableRepository
 from backend.infrastructure.datetime import to_yyyymmdd
 from backend.infrastructure.neispy.entities.timetable import NeispyTimetable
 
-class NeispyTimetableRepository(TimetableRepository):
+class NeispyTimetableRepository:
     def __init__(self, neispy: Neispy):
         self.neispy = neispy
         
@@ -25,18 +24,18 @@ class NeispyTimetableRepository(TimetableRepository):
         
         try:
             if school_name.endswith("고등학교"):
-                func = await self.neispy.hisTimetable
+                func = self.neispy.hisTimetable
             elif school_name.endswith("중학교"):
-                func = await self.neispy.misTimetable
+                func = self.neispy.misTimetable
             elif school_name.endswith("초등학교"):
-                func = await self.neispy.elsTimetable
+                func = self.neispy.elsTimetable
             else:
-                func = await self.neispy.spsTimetable
+                func = self.neispy.spsTimetable
                 
             ay = date.year if date.month >= 3 else date.year - 1
             sem = 1 if 2 < date.month < 9 else 2
 
-            timetable = func(
+            timetables = await func(
                 ATPT_OFCDC_SC_CODE=edu_office_code,
                 SD_SCHUL_CODE=standard_school_code,
                 ALL_TI_YMD=to_yyyymmdd(date),
@@ -48,5 +47,7 @@ class NeispyTimetableRepository(TimetableRepository):
 
         except DataNotFound:
             return []
+        
+        response = next(iter(timetables.__dict__.values()))
 
-        return [NeispyTimetable.from_neispy(timetable) for timetable in timetable[1].row]
+        return [NeispyTimetable.from_neispy(timetable) for timetable in response[1].row]
