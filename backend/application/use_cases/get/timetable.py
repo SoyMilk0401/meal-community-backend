@@ -1,4 +1,5 @@
 from datetime import date
+
 from backend.application.exceptions import TimetableNotFound
 from backend.application.use_cases.create.timetable import CreateTimetableUseCase
 from backend.domain.entities.timetable import Timetable
@@ -7,24 +8,25 @@ from backend.domain.repositories.timetable import TimetableRepository
 
 
 class GetDailyTimetableUseCase:
-    def __init__(self, sa_timetable_repository: TimetableRepository, remote_timetable_repository: TimetableRepository):
-        self.sa_timetable_repository = sa_timetable_repository
+    def __init__(
+        self,
+        local_timetable_repository: TimetableRepository,
+        remote_timetable_repository: TimetableRepository,
+    ):
+        self.local_timetable_repository = local_timetable_repository
         self.remote_timetable_repository = remote_timetable_repository
 
     async def execute(
-        self, 
-        user: User,
-        school_info_id: int,
-        date: date
+        self, user: User, school_info_id: int, date: date
     ) -> list[Timetable]:
-        
-        timetables = await self.sa_timetable_repository.get_by_code(
+
+        timetables = await self.local_timetable_repository.get_by_school_info_id(
             school_info_id=school_info_id,
             date=date,
             grade=user.grade,
             room=user.room,
         )
-        
+
         if not timetables:
             timetables = await self.remote_timetable_repository.get_by_code(
                 school_name=user.school_info.name,
@@ -34,13 +36,15 @@ class GetDailyTimetableUseCase:
                 grade=str(user.grade),
                 room=str(user.room),
             )
-            
+
             if timetables:
-                create_use_case = CreateTimetableUseCase(self.sa_timetable_repository)
+                create_use_case = CreateTimetableUseCase(
+                    self.local_timetable_repository
+                )
                 for timetable in timetables:
                     await create_use_case.execute(school_info_id, timetable)
 
         if not timetables:
             raise TimetableNotFound
-        
+
         return timetables

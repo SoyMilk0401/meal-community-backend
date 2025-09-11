@@ -11,8 +11,8 @@ from backend.infrastructure.sqlalchemy.entities.timetable import TimetableSchema
 class SQLAlchemyTimetableRepository(TimetableRepository):
     def __init__(self, sa: SQLAlchemy):
         self.sa = sa
-    
-    async def get_by_code(
+
+    async def get_by_school_info_id(
         self,
         school_info_id: int,
         date: date,
@@ -31,6 +31,17 @@ class SQLAlchemyTimetableRepository(TimetableRepository):
                 )
                 return [schema.to_entity() for schema in result.scalars().all()]
 
+    async def get_by_code(
+        self,
+        school_name: str,
+        edu_office_code: str,
+        standard_school_code: str,
+        date: date,
+        grade: str,
+        room: str,
+    ) -> list[Timetable]:
+        raise NotImplementedError
+
     async def create(
         self,
         school_info_id: int,
@@ -48,4 +59,4 @@ class SQLAlchemyTimetableRepository(TimetableRepository):
                 )
                 session.add(timetable_schema)
                 await session.commit()
-                return timetable_schema.id
+                return timetable_schema.to_entity()

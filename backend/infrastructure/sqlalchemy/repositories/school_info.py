@@ -1,10 +1,12 @@
 from sqlalchemy import and_, select
 
+from backend.domain.entities.school_info import SchoolInfo
+from backend.domain.repositories.school_info import SchoolInfoRepository
 from backend.infrastructure.sqlalchemy import SQLAlchemy
 from backend.infrastructure.sqlalchemy.entities.school_info import SchoolInfoSchema
 
 
-class SQLAlchemySchoolInfoRepository:
+class SQLAlchemySchoolInfoRepository(SchoolInfoRepository):
     def __init__(self, sa: SQLAlchemy) -> None:
         self.sa = sa
 
@@ -33,7 +35,7 @@ class SQLAlchemySchoolInfoRepository:
 
     async def get_by_code(
         self, edu_office_code: str, standard_school_code: str
-    ) -> SchoolInfoSchema | None:
+    ) -> SchoolInfo | None:
         async with self.sa.session_maker() as session:
             result = await session.execute(
                 select(SchoolInfoSchema).where(
@@ -44,7 +46,10 @@ class SQLAlchemySchoolInfoRepository:
                 )
             )
 
-            return result.scalars().first()
+            schema = result.scalars().first()
+
+            if schema:
+                return schema.to_entity()
 
     async def get_id_by_code(
         self, edu_office_code: str, standard_school_code: str
