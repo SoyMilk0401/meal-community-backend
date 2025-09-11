@@ -9,3 +9,6 @@ class CreateCommentStatus(Enum):
 
 class CreateMealStatus(Enum):
     SCHOOL_INFO_NOT_FOUND = "school_info_not_found"
+
+class CreateTimetableStatus(Enum):
+    SCHOOL_INFO_NOT_FOUND = "school_info_not_found"

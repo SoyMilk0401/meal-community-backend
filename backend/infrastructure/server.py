@@ -13,12 +13,15 @@ from backend.infrastructure.genai.repositories.calorie import GeminiCalorieRepos
 from backend.infrastructure.jwt import jwt_decode, jwt_encode
 from backend.infrastructure.neispy.repositories.meal import NeispyMealRepository
 from backend.infrastructure.neispy.repositories.school import NeispySchoolRepository
+from backend.infrastructure.neispy.repositories.timetable import NeispyTimetableRepository
 from backend.infrastructure.sanic import Backend
 from backend.infrastructure.sqlalchemy import SQLAlchemy
 from backend.infrastructure.sqlalchemy.repositories.comment import (
     SQLAlchemyCommentRepository,
 )
 from backend.infrastructure.sqlalchemy.repositories.meal import SQLAlchemyMealRepository
+from backend.infrastructure.sqlalchemy.repositories.school_info import SQLAlchemySchoolInfoRepository
+from backend.infrastructure.sqlalchemy.repositories.timetable import SQLAlchemyTimetableRepository
 from backend.infrastructure.sqlalchemy.repositories.user import SQLAlchemyUserRepository
 from backend.infrastructure.valkey.entities.repositories.refresh_token import (
     ValkeyRefreshTokenRepository,
@@ -39,9 +42,12 @@ async def startup(app: Backend, loop: AbstractEventLoop) -> None:
         app.ctx.valkey, app.config.REFRESH_TOKEN_EXP
     )
     app.ctx.neispy_school_repository = NeispySchoolRepository(app.ctx.neispy)
+    app.ctx.school_info_repository = SQLAlchemySchoolInfoRepository(app.ctx.sa)
     app.ctx.neispy_meal_repository = NeispyMealRepository(app.ctx.neispy)
     app.ctx.sa_meal_repository = SQLAlchemyMealRepository(app.ctx.sa)
     app.ctx.calorie_repository = GeminiCalorieRepository(app.ctx.gemini)
+    app.ctx.timetable_repository = SQLAlchemyTimetableRepository(app.ctx.sa)
+    app.ctx.neispy_timetable_repository = NeispyTimetableRepository(app.ctx.neispy)
 
     # Initialize External Services
     app.ctx.jwt_encode = partial(

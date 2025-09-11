@@ -5,6 +5,7 @@ from backend.adapters.controllers.endpoint.api.meal import meal
 from backend.adapters.controllers.endpoint.api.school import school
 from backend.adapters.controllers.endpoint.api.user import user
 from backend.adapters.controllers.endpoint.api.calorie import calorie
+from backend.adapters.controllers.endpoint.api.timetable import timetable
 
 api_endpoint = Blueprint.group(
     user,
@@ -12,5 +13,6 @@ api_endpoint = Blueprint.group(
     meal,
     comment,
     calorie,
+    timetable,
     url_prefix="/api",
 )
