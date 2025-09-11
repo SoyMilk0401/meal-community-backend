@@ -3,12 +3,11 @@ from __future__ import annotations
 from datetime import date
 
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 
 from backend.domain.entities.timetable import Timetable
 from backend.infrastructure.sqlalchemy.base import Base
 from backend.infrastructure.sqlalchemy.mixin import Schema
-from backend.infrastructure.sqlalchemy.entities.school_info import SchoolInfoSchema
 
 class TimetableSchema(Base, Schema):
     __tablename__ = "timetable"

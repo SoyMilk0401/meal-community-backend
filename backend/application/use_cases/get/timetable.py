@@ -1,7 +1,6 @@
-from datetime import date, timedelta
+from datetime import date
 from backend.application.exceptions import TimetableNotFound
 from backend.application.use_cases.create.timetable import CreateTimetableUseCase
-from backend.application.use_cases.get.school_info import GetSchoolInfoUseCase
 from backend.domain.entities.timetable import Timetable
 from backend.domain.entities.user import User
 from backend.domain.repositories.timetable import TimetableRepository

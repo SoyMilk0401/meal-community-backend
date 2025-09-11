@@ -2,12 +2,9 @@ from datetime import timedelta
 from sanic import json
 from sanic.blueprints import Blueprint
 from sanic_ext import validate
-from backend.domain.entities.user import User
 from backend.infrastructure.datetime import to_date
 
 from backend.application.dtos.timetable import TimetableDTO
-from backend.application.exceptions import TimetableNotFound
-from backend.application.use_cases.create.timetable import CreateTimetableUseCase
 from backend.application.use_cases.get.timetable import (
     GetDailyTimetableUseCase,
 )

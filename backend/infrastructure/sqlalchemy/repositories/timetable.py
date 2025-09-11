@@ -2,11 +2,9 @@ from datetime import date
 
 from sqlalchemy import select
 
-from backend.domain.entities.school_info import SchoolInfo
 from backend.domain.entities.timetable import Timetable
 from backend.domain.repositories.timetable import TimetableRepository
 from backend.infrastructure.sqlalchemy import SQLAlchemy
-from backend.infrastructure.sqlalchemy.entities.school_info import SchoolInfoSchema
 from backend.infrastructure.sqlalchemy.entities.timetable import TimetableSchema
 
 

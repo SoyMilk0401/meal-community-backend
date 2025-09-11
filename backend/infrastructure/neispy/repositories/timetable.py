@@ -1,5 +1,4 @@
 from datetime import date
-from typing import Literal
 
 from neispy import Neispy
 from neispy.error import DataNotFound
