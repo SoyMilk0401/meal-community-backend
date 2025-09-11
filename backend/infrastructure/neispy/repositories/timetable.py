@@ -66,5 +66,5 @@ class NeispyTimetableRepository(TimetableRepository):
         self,
         school_info_id: int,
         timetable: Timetable,
-    ) -> Timetable:
+    ) -> int:
         raise NotImplementedError
