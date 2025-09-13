@@ -12,8 +12,8 @@ class TimetableRepository(ABC):
         edu_office_code: str,
         standard_school_code: str,
         date: date,
-        grade: str,
-        room: str,
+        grade: int,
+        room: int,
     ) -> list[Timetable]:
         raise NotImplementedError
 

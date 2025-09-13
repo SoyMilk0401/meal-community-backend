@@ -33,8 +33,8 @@ class GetDailyTimetableUseCase:
                 edu_office_code=user.school_info.edu_office_code,
                 standard_school_code=user.school_info.standard_school_code,
                 date=date,
-                grade=str(user.grade),
-                room=str(user.room),
+                grade=user.grade,
+                room=user.room,
             )
 
             if timetables:

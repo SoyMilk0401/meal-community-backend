@@ -19,8 +19,8 @@ class NeispyTimetableRepository(TimetableRepository):
         edu_office_code: str,
         standard_school_code: str,
         date: date,
-        grade: str,
-        room: str,
+        grade: int,
+        room: int,
     ) -> list[Timetable]:
 
         try:
@@ -40,8 +40,8 @@ class NeispyTimetableRepository(TimetableRepository):
                 ATPT_OFCDC_SC_CODE=edu_office_code,
                 SD_SCHUL_CODE=standard_school_code,
                 ALL_TI_YMD=int(to_yyyymmdd(date)),
-                GRADE=grade,
-                CLASS_NM=room,
+                GRADE=str(grade),
+                CLASS_NM=str(room),
                 AY=str(ay),
                 SEM=str(sem),
             )

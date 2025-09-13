@@ -13,15 +13,21 @@ from backend.infrastructure.genai.repositories.calorie import GeminiCalorieRepos
 from backend.infrastructure.jwt import jwt_decode, jwt_encode
 from backend.infrastructure.neispy.repositories.meal import NeispyMealRepository
 from backend.infrastructure.neispy.repositories.school import NeispySchoolRepository
-from backend.infrastructure.neispy.repositories.timetable import NeispyTimetableRepository
+from backend.infrastructure.neispy.repositories.timetable import (
+    NeispyTimetableRepository,
+)
 from backend.infrastructure.sanic import Backend
 from backend.infrastructure.sqlalchemy import SQLAlchemy
 from backend.infrastructure.sqlalchemy.repositories.comment import (
     SQLAlchemyCommentRepository,
 )
 from backend.infrastructure.sqlalchemy.repositories.meal import SQLAlchemyMealRepository
-from backend.infrastructure.sqlalchemy.repositories.school_info import SQLAlchemySchoolInfoRepository
-from backend.infrastructure.sqlalchemy.repositories.timetable import SQLAlchemyTimetableRepository
+from backend.infrastructure.sqlalchemy.repositories.school_info import (
+    SQLAlchemySchoolInfoRepository,
+)
+from backend.infrastructure.sqlalchemy.repositories.timetable import (
+    SQLAlchemyTimetableRepository,
+)
 from backend.infrastructure.sqlalchemy.repositories.user import SQLAlchemyUserRepository
 from backend.infrastructure.valkey.entities.repositories.refresh_token import (
     ValkeyRefreshTokenRepository,
@@ -67,7 +73,7 @@ def create_app(config: BackendConfig) -> Backend:
     backend.static("/assets", "/frontend/assets", name="static")
     backend.static("/meal.png", "/frontend/meal.png", name="main_image")
     backend.static("/vite.svf", "/frontend/vite.svg", name="favicon")
-    config.CORS_ORIGINS = "https://meal.solo.moe"
+    config.CORS_ORIGINS = "http://localhost:5173"
     config.CORS_SUPPORTS_CREDENTIALS = True
     config.CORS_ALLOW_HEADERS = ["Content-Type", "Authorization", "Set-Cookie"]
     backend.config.update(config)
