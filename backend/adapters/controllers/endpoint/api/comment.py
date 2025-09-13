@@ -3,6 +3,7 @@ from sanic.blueprints import Blueprint
 from sanic_ext import validate
 
 from backend.application.dtos.comment import CreateCommentDTO, GetCommentDTO
+from backend.application.exceptions import CommentNotFound
 from backend.application.use_cases.create.comment import CreateCommentUseCase
 from backend.application.use_cases.get.comment import GetCommentByMealIdUseCase
 from backend.application.use_cases.get.user import GetUserByIDUseCase
@@ -45,9 +46,12 @@ async def get_comments_by_meal_id(
     _,
     meal_id: int,
 ):
-    comments = await GetCommentByMealIdUseCase(
-        request.app.ctx.comment_repository
-    ).execute(meal_id)
+    try:
+        comments = await GetCommentByMealIdUseCase(
+            request.app.ctx.comment_repository
+        ).execute(meal_id)
+    except CommentNotFound:
+        return json({"results": []})
 
     result = [GetCommentDTO.from_entity(comment) for comment in comments]
 
