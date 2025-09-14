@@ -94,7 +94,9 @@ async def login_user(request: BackendRequest, login_user_dto: LoginUserDTO):
 @require_auth
 async def get_user(request: BackendRequest, user_id: int):
     user = await GetUserByIDUseCase(request.app.ctx.user_repository).execute(user_id)
-    return json(user.to_dict())
+    user_dict = user.to_dict()
+    del user_dict["password"]
+    return json(user_dict)
 
 
 @user.post("/check")
