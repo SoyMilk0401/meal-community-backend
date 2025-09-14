@@ -69,10 +69,8 @@ async def closeup(app: Backend, loop: AbstractEventLoop) -> None:
 
 def create_app(config: BackendConfig) -> Backend:
     backend = Backend("backend", error_handler=ErrorHandler())
-    backend.static("/", "/dist/index.html", name="index")
-    backend.static("/assets", "/dist/assets", name="static")
-    backend.static("/meal.png", "/dist/meal.png", name="main_image")
-    backend.static("/vite.svg", "/dist/vite.svg", name="favicon")
+    backend.static("/", "./dist/index.html", name="index")
+    backend.static("/", "./dist/", name="dist")
     config.CORS_ORIGINS = "https://meal.solo.moe"
     config.CORS_SUPPORTS_CREDENTIALS = True
     config.CORS_ALLOW_HEADERS = ["Content-Type", "Authorization", "Set-Cookie"]
