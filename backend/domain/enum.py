@@ -12,3 +12,8 @@ class CreateMealStatus(Enum):
 
 class CreateTimetableStatus(Enum):
     SCHOOL_INFO_NOT_FOUND = "school_info_not_found"
+    
+class CreateRaingStatus(Enum):
+    SUCCESS = "success"
+    AUTHOR_NOT_FOUND = "author_not_found"
+    ALREADY_RATED = "already_rated"

@@ -18,6 +18,7 @@ from backend.infrastructure.sqlalchemy.repositories.comment import (
     SQLAlchemyCommentRepository,
 )
 from backend.infrastructure.sqlalchemy.repositories.meal import SQLAlchemyMealRepository
+from backend.infrastructure.sqlalchemy.repositories.rating import SQLAlchemyRatingRepository
 from backend.infrastructure.sqlalchemy.repositories.school_info import SQLAlchemySchoolInfoRepository
 from backend.infrastructure.sqlalchemy.repositories.user import SQLAlchemyUserRepository
 from backend.infrastructure.sqlalchemy.repositories.timetable import (
@@ -43,6 +44,7 @@ class BackendContext(SimpleNamespace):
     sa_meal_repository: SQLAlchemyMealRepository
     calorie_repository: GeminiCalorieRepository
     school_info_repository: SQLAlchemySchoolInfoRepository
+    rating_repository: SQLAlchemyRatingRepository
     jwt_encode: Callable[[dict[str, Any]], str]
     jwt_decode: Callable[[str], dict[str, Any]]
     lock: asyncio.Lock

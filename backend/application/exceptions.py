@@ -57,3 +57,10 @@ class SchoolInfoNotFound(BackendException):
     def __init__(self, message: str = "학교정보를 찾을 수 없습니다."):
         super().__init__(message)
 
+class RatingNotFound(BackendException):
+    def __init__(self, message: str = "평점을 찾을 수 없습니다."):
+        super().__init__(message)
+        
+class AlreadyRated(BackendException):
+    def __init__(self, message: str = "이미 평점을 남겼습니다."):
+        super().__init__(message)
