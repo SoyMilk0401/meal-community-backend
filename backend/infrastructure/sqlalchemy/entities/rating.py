@@ -4,7 +4,6 @@ from sqlalchemy import ForeignKey, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.domain.entities.rating import Rating
 from backend.infrastructure.sqlalchemy.base import Base
-from backend.infrastructure.sqlalchemy.mixin import Schema
 from backend.infrastructure.sqlalchemy.entities.user import UserSchema
 
 class RatingSchema(Base):
@@ -23,9 +22,9 @@ class RatingSchema(Base):
     def to_entity(self) -> Rating:
         rating = Rating(
             meal_id=self.meal_id,
-            author=self.author,
+            user_id=self.user_id,
             score=self.score,
+            author=self.author,
         )
         rating.created_at = self.created_at
-        rating.id = self.id
         return rating

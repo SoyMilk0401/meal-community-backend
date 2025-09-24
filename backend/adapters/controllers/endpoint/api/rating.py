@@ -5,7 +5,7 @@ from sanic_ext import validate
 from backend.application.dtos.rating import CreateRatingDTO
 from backend.application.exceptions import RatingNotFound
 from backend.application.use_cases.create.rating import CreateRatingUseCase
-from backend.application.use_cases.get.rating import GetRaingByMealTdUseCase
+from backend.application.use_cases.get.rating import GetRatingByMealIdUseCase
 from backend.application.use_cases.get.user import GetUserByIDUseCase
 from backend.domain.entities.rating import Rating
 from backend.infrastructure.jwt import require_auth
@@ -48,9 +48,9 @@ async def get_ratings_by_meal_id(
     meal_id: int,
 ):
     try:
-        ratings = await GetRaingByMealTdUseCase(
+        ratings = await GetRatingByMealIdUseCase(
             request.app.ctx.rating_repository
-        ).excute(meal_id)
+        ).execute(meal_id)
     except RatingNotFound:
         return json({"results": []})
     

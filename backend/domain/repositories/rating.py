@@ -14,6 +14,12 @@ class RatingRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
+    async def get_by_id(
+        self, user_id: int, meal_id: int
+    ) -> list[Rating]:
+        raise NotImplementedError
+    
+    @abstractmethod
     async def get_by_meal_id(
         self, meal_id: int
     ) -> list[Rating]:
