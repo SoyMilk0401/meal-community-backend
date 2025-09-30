@@ -22,9 +22,8 @@ class RatingSchema(Base):
     def to_entity(self) -> Rating:
         rating = Rating(
             meal_id=self.meal_id,
-            user_id=self.user_id,
             score=self.score,
-            author=self.author,
+            author=self.author.to_entity(),
         )
         rating.created_at = self.created_at
         return rating

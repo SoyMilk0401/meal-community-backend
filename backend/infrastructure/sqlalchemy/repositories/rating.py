@@ -21,8 +21,17 @@ class SQLAlchemyRatingRepository(RatingRepository):
     ) -> CreateRaingStatus:
         async with self.sa.session_maker() as session:
             async with session.begin():
+                existing_rating = await session.execute(
+                    select(RatingSchema).where(
+                        RatingSchema.meal_id == meal_id,
+                        RatingSchema.user_id == user_id
+                    )
+                )
+                if existing_rating.scalar_one_or_none():
+                    return CreateRaingStatus.ALREADY_RATED
+
                 author = await session.get(UserSchema, user_id)
-                
+
                 if not author:
                         return CreateRaingStatus.AUTHOR_NOT_FOUND
                     
@@ -46,5 +55,5 @@ class SQLAlchemyRatingRepository(RatingRepository):
                     .options(selectinload(RatingSchema.author))
                 )
                 ratings = result.scalars().all()
-                
-                return [rating for rating in ratings]
+
+                return [rating.to_entity() for rating in ratings]

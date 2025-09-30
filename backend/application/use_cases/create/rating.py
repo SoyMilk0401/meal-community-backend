@@ -9,14 +9,12 @@ class CreateRatingUseCase:
         self.raing_repository = raing_repository
         
     async def execute(self, user_id: int, meal_id: int, rating: Rating) -> None:
-        try:
-            status = await self.raing_repository.create(
-                user_id=user_id,
-                meal_id=meal_id,
-                rating=rating,
-            )
-        except CreateRaingStatus as status:
-            if CreateRaingStatus.AUTHOR_NOT_FOUND == status:
-                raise UserNotFound
-            if CreateRaingStatus.ALREADY_RATED == status:
-                raise AlreadyRated
+        status = await self.raing_repository.create(
+            user_id=user_id,
+            meal_id=meal_id,
+            rating=rating,
+        )
+        if status == CreateRaingStatus.AUTHOR_NOT_FOUND:
+            raise UserNotFound
+        if status == CreateRaingStatus.ALREADY_RATED:
+            raise AlreadyRated
