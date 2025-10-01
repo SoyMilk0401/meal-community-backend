@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from backend.domain.entities.rating import Rating
-from backend.domain.enum import CreateRaingStatus
+from backend.domain.enum import CreateRatingStatus
 
 class RatingRepository(ABC):
     @abstractmethod
@@ -10,7 +10,7 @@ class RatingRepository(ABC):
         user_id: int,
         meal_id: int,
         rating: Rating,
-    ) -> CreateRaingStatus:
+    ) -> CreateRatingStatus:
         raise NotImplementedError
     
     @abstractmethod

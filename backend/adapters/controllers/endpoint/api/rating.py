@@ -23,18 +23,16 @@ async def write_rating(
     user_id: int,
     create_rating_dto: CreateRatingDTO,
 ):
-    user = await GetUserByIDUseCase(request.app.ctx.user_repository).execute(user_id)
 
     rating_entity = Rating(
         meal_id=create_rating_dto.meal_id,
-        author=user,
         score=create_rating_dto.score
     )
     
     async with request.app.ctx.lock:
         await CreateRatingUseCase(request.app.ctx.rating_repository).execute(
-            user_id=user_id,
             meal_id=create_rating_dto.meal_id,
+            user_id=user_id,
             rating=rating_entity,
         )
     
@@ -48,17 +46,10 @@ async def get_ratings_by_meal_id(
     _,
     meal_id: int,
 ):
-    ratings = await GetRatingByMealIdUseCase(
+    average_score = await GetRatingByMealIdUseCase(
         request.app.ctx.rating_repository
     ).execute(meal_id)
     
-    if ratings:
-        total_score = sum(rating.score for rating in ratings)
-        
-        average_score = total_score / len(ratings)
-    else:
-        average_score = 0
-    
     return json({
-        "average_score": round(average_score, 2)
+        "average_score": average_score
     })
