@@ -64,3 +64,7 @@ class RatingNotFound(BackendException):
 class AlreadyRated(BackendException):
     def __init__(self, message: str = "이미 평점을 남겼습니다."):
         super().__init__(message)
+        
+class InvalidRatingRange(BackendException):
+    def __init__(self, message: str = "평점은 0~5로 해야합니다."):
+        super().__init__(message)

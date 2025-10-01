@@ -1,5 +1,3 @@
-from backend.application.exceptions import RatingNotFound
-from backend.domain.entities.rating import Rating
 from backend.domain.repositories.rating import RatingRepository
 
 
@@ -15,7 +13,6 @@ class GetRatingByMealIdUseCase:
             average_score = total_score / len(ratings)
         else:
             average_score = 0
-            raise RatingNotFound
         
         return round(average_score, 2)
     
