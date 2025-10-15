@@ -22,6 +22,7 @@ from backend.infrastructure.sqlalchemy.repositories.comment import (
     SQLAlchemyCommentRepository,
 )
 from backend.infrastructure.sqlalchemy.repositories.meal import SQLAlchemyMealRepository
+from backend.infrastructure.sqlalchemy.repositories.rating import SQLAlchemyRatingRepository
 from backend.infrastructure.sqlalchemy.repositories.school_info import (
     SQLAlchemySchoolInfoRepository,
 )
@@ -54,7 +55,8 @@ async def startup(app: Backend, loop: AbstractEventLoop) -> None:
     app.ctx.calorie_repository = GeminiCalorieRepository(app.ctx.gemini)
     app.ctx.timetable_repository = SQLAlchemyTimetableRepository(app.ctx.sa)
     app.ctx.neispy_timetable_repository = NeispyTimetableRepository(app.ctx.neispy)
-
+    app.ctx.rating_repository = SQLAlchemyRatingRepository(app.ctx.sa)
+    
     # Initialize External Services
     app.ctx.jwt_encode = partial(
         jwt_encode, secret=app.config.JWT_SECRET, exp=app.config.ACCESS_TOKEN_EXP
