@@ -1,16 +1,16 @@
 from __future__ import annotations
-from datetime import datetime
-from sqlalchemy import ForeignKey, DateTime, PrimaryKeyConstraint, func
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from sqlalchemy import ForeignKey, PrimaryKeyConstraint
+from sqlalchemy.orm import Mapped, mapped_column
+
 from backend.domain.entities.rating import Rating
 from backend.infrastructure.sqlalchemy.base import Base
-from backend.infrastructure.sqlalchemy.entities.user import UserSchema
 
 class RatingSchema(Base):
     __tablename__ = "rating"
 
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
     meal_id: Mapped[int] = mapped_column(ForeignKey("meal.id"))
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
     score: Mapped[int] = mapped_column()
     
     __table_args__ = (
@@ -19,6 +19,7 @@ class RatingSchema(Base):
 
     def to_entity(self) -> Rating:
         rating = Rating(
+            user_id=self.user_id,
             meal_id=self.meal_id,
             score=self.score,
         )

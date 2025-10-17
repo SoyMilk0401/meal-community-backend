@@ -6,6 +6,7 @@ from backend.application.dtos.user import CreateUserDTO, LoginUserDTO, ModifyUse
 from backend.application.use_cases.create.refresh_token import CreateRefreshTokenUseCase
 from backend.application.use_cases.create.user import CreateUserUseCase
 from backend.application.use_cases.delete.refresh_token import DeleteRefreshTokenUseCase
+from backend.application.use_cases.delete.user import DeleteUserUseCase
 from backend.application.use_cases.get.refresh_token import GetRefreshTokenUseCase
 from backend.application.use_cases.get.user import (
     GetUserByIDUseCase,
@@ -190,3 +191,22 @@ async def modify_user(
     await UpdateUserUseCase(request.app.ctx.user_repository).execute(user)
 
     return json({"message": "User updated successfully"})
+
+
+@user.delete("/delete")
+@require_auth
+async def delete_user(request: BackendRequest, user_id: int):
+    client_refresh_token_value = request.cookies.get("refresh_token")
+    if not client_refresh_token_value:
+        raise BadRequest("Refresh token is missing.")
+
+    await DeleteRefreshTokenUseCase(request.app.ctx.refresh_token_repository).execute(
+        client_refresh_token_value
+    )
+    
+    await DeleteUserUseCase(request.app.ctx.user_repository).execute(user_id)
+    
+    response = json({"message": "User deleted successfully"})
+    response.delete_cookie("refresh_token")
+    
+    return response

@@ -92,3 +92,15 @@ class SQLAlchemyUserRepository(UserRepository):
                 user_schema.room = user.room
 
             return user_schema.to_entity()
+
+
+    async def delete(self, user_id: int) -> None:
+        async with self.sa.session_maker() as session:
+            async with session.begin():
+                result = await session.execute(
+                    select(UserSchema)
+                    .where(UserSchema.id == user_id)
+                )
+
+                user_schema = result.scalar_one()
+                await session.delete(user_schema)

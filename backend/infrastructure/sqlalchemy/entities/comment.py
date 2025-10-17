@@ -14,7 +14,7 @@ from backend.infrastructure.sqlalchemy.mixin import Schema
 class CommentSchema(Base, Schema):
     __tablename__ = "comment"
 
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
     meal_id: Mapped[int] = mapped_column(ForeignKey("meal.id"))
 
     content: Mapped[str]
