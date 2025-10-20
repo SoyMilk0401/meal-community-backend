@@ -22,3 +22,7 @@ class UserRepository(ABC):
     @abstractmethod
     async def get_id_by_email(self, email: str) -> int | None:
         raise NotImplementedError
+
+    @abstractmethod
+    async def update(self, user: User) -> User:
+        raise NotImplementedError

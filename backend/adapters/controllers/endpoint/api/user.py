@@ -2,7 +2,7 @@ from sanic import BadRequest, json
 from sanic.blueprints import Blueprint
 from sanic_ext import validate
 
-from backend.application.dtos.user import CreateUserDTO, LoginUserDTO
+from backend.application.dtos.user import CreateUserDTO, LoginUserDTO, ModifyUserDTO
 from backend.application.use_cases.create.refresh_token import CreateRefreshTokenUseCase
 from backend.application.use_cases.create.user import CreateUserUseCase
 from backend.application.use_cases.delete.refresh_token import DeleteRefreshTokenUseCase
@@ -14,6 +14,7 @@ from backend.application.use_cases.get.user import (
 from backend.application.use_cases.update.refresh_token import (
     UpdateRefreshTokenTTLUseCase,
 )
+from backend.application.use_cases.update.user import UpdateUserUseCase
 from backend.infrastructure.jwt import require_auth
 from backend.infrastructure.sanic import BackendRequest
 
@@ -173,4 +174,19 @@ async def logout_user(request: BackendRequest):
 
 
 @user.post("/modify")
-async def modify_user(request: BackendRequest): ...
+@require_auth
+@validate(json=ModifyUserDTO, body_argument="modify_user_dto")
+async def modify_user(
+    request: BackendRequest,
+    user_id: int,
+    modify_user_dto: ModifyUserDTO
+):
+    user = await GetUserByIDUseCase(request.app.ctx.user_repository).execute(user_id)
+    
+    user.name = modify_user_dto.name
+    user.grade = modify_user_dto.grade
+    user.room = modify_user_dto.room
+    
+    await UpdateUserUseCase(request.app.ctx.user_repository).execute(user)
+
+    return json({"message": "User updated successfully"})

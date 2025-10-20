@@ -61,3 +61,16 @@ class PrivateUserDTO:
     @classmethod
     def from_entity(cls, entity: User):
         return cls(entity.name)
+
+
+@dataclass
+class ModifyUserDTO:
+    name: str
+    """이름"""
+    grade: int
+    """학년"""
+    room: int
+    """반"""
+
+    def to_dict(self):
+        return asdict(self)

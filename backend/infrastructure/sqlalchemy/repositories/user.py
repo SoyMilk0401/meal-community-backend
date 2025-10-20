@@ -76,3 +76,19 @@ class SQLAlchemyUserRepository(UserRepository):
 
                 if user:
                     return user.id
+                
+    async def update(self, user: User) -> User:
+        async with self.sa.session_maker() as session:
+            async with session.begin():
+                result = await session.execute(
+                    select(UserSchema)
+                    .where(UserSchema.email == user.email)
+                )
+
+                user_schema = result.scalar_one()
+
+                user_schema.name = user.name
+                user_schema.grade = user.grade
+                user_schema.room = user.room
+
+            return user_schema.to_entity()
