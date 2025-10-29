@@ -26,3 +26,7 @@ class UserRepository(ABC):
     @abstractmethod
     async def update(self, user: User) -> User:
         raise NotImplementedError
+    
+    @abstractmethod
+    async def delete(self, user_id: int) -> None:
+        raise NotImplementedError

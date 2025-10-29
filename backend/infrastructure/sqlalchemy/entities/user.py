@@ -30,6 +30,8 @@ class UserSchema(Base, Schema):
     room: Mapped[int] = mapped_column()
     created_at: Mapped[datetime] = mapped_column(DateTime, default=func.now())
     """생성일"""
+    is_deleted: Mapped[bool] = mapped_column(default=False)
+    """삭제 여부"""
 
     def to_entity(self) -> User:
         user = User(

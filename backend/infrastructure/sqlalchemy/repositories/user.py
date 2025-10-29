@@ -92,3 +92,20 @@ class SQLAlchemyUserRepository(UserRepository):
                 user_schema.room = user.room
 
             return user_schema.to_entity()
+
+    async def delete(self, user_id: int) -> None:
+        async with self.sa.session_maker() as session:
+            async with session.begin():
+                result = await session.execute(
+                    select(UserSchema)
+                    .where(UserSchema.id == user_id)
+                )
+
+                user_schema = result.scalar_one()
+                
+                user_schema.is_deleted = True
+                user_schema.name = "탈퇴한 사용자"
+                user_schema.email = f"{user_id}@deleted.abc"
+                user_schema.password = ""
+                user_schema.grade = 0
+                user_schema.room = 0
